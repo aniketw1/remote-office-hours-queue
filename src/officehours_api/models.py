@@ -60,8 +60,8 @@ class Queue(SafeDeleteModel):
         default='open',
     )
     MEETING_BACKEND_TYPES = [
-        (key, value.friendly_name)
-        for key, value in settings.BACKENDS.items()
+        (backend_name, backend.friendly_name)
+        for backend_name, backend in backend_instances.items()
     ]
     DEFAULT_ALLOWED_TYPES = [settings.DEFAULT_BACKEND]
     allowed_backends = ArrayField(
