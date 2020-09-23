@@ -101,7 +101,7 @@ interface AddAttendeeFormProps {
 
 function AddAttendeeForm(props: AddAttendeeFormProps) {
     const [attendee, setAttendee] = useState("");
-    let [selectedBackend, setSelectedBackend] = useState(props.defaultBackend);
+    const [selectedBackend, setSelectedBackend] = useState(props.defaultBackend);
     if (!props.allowedBackends.has(selectedBackend)) {
         setSelectedBackend(Array.from(props.allowedBackends)[0])
     }
