@@ -99,10 +99,14 @@ class Meeting(SafeDeleteModel):
     )
     backend_metadata = JSONField(null=True, default=dict)
 
+    def __init__(self, *args, **kwargs):
+        super(Meeting, self).__init__(*args, **kwargs)
+        self._original_backend_type = self.backend_type
+
     def save(self, *args, **kwargs):
+        if self.backend_type != self._original_backend_type:
+            self.backend_metadata = {}
         backend = backend_instances[self.backend_type]
-        # TODO Clear self.backend_metadata if backend_type has changed
-        # Otherwise, changing backends will not work
         user_email = self.queue.hosts.first().email
         self.backend_metadata['user_email'] = user_email
         try:
