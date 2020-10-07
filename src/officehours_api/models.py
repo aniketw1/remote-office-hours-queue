@@ -111,6 +111,16 @@ class Meeting(SafeDeleteModel):
         self.save()
         super().delete(*args, **kwargs)
 
+    @property
+    def line_place(self):
+        if not self.queue:
+            return None
+        meetings = self.queue.meeting_set.order_by('id')
+        for i in range(0, len(meetings)):
+            m = meetings[i]
+            if m == self:
+                return i
+
     def __str__(self):
         return f'{self.id}: {self.backend_type} {self.backend_metadata}'
 
@@ -140,3 +150,6 @@ def post_save_user_signal_handler(sender, instance: User, created, **kwargs):
         instance.profile
     except User.profile.RelatedObjectDoesNotExist:
         instance.profile = Profile.objects.create(user=instance)
+
+
+import officehours_api.notifications

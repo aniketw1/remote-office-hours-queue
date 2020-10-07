@@ -3,6 +3,7 @@ import { useState, createRef, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 import { Alert, Button, Form, InputGroup, Modal, Table } from "react-bootstrap";
 import Dialog from "react-bootstrap-dialog";
+import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 
 import * as api from "../services/api";
@@ -388,9 +389,17 @@ interface MeetingInfoProps {
 }
 
 const MeetingInfoDialog = (props: MeetingInfoProps) => {
+    const phoneDetails = (phoneNumber: string) => {
+        if (phoneNumber === "") {
+            return undefined;
+        } else {
+            return (<><strong>  Phone:</strong><PhoneInput value={phoneNumber} disabled={true}/></>);
+        }
+    }
     const attendeeDetails = props.meeting?.attendees.map(a => 
         <p>
             <UserDisplay user={a}/>
+            {phoneDetails(a.phone_number)}
         </p>
     );
     const generalInfo = props.meeting
